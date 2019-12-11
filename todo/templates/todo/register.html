@@ -1,0 +1,23 @@
+{% extends 'todo/base.html' %}
+
+{% block main %}
+    <main>
+        <section class="register_form" >
+            <form action="{% url 'register_url' %}" method="post">
+
+                {% csrf_token %}
+                {% for field in form %}
+                    {{ field.label }}
+                    {{ field }}
+                    {% for error in field.errors %}
+                    <span class="form_error">[{{ error }}]</span>
+                    {% endfor %}
+                    <br>
+                {% endfor %}
+
+                <input type="submit" value="Зарегистрироваться">
+                <a href="{% url 'login_url' %}" class="login_form_sign_up">Войти</a>
+            </form>
+        </section>
+    </main>
+{% endblock %}

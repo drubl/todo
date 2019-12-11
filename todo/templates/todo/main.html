@@ -1,0 +1,53 @@
+{% extends 'todo/base.html' %}
+
+{% block main %}
+    <main>
+        <section class="todo_list">
+            <header>
+                <p class="todo_counter">{{ count_complited_tasks }} из {{ tasks.count }} задач выполнено</p>
+                <div class="todo_add"><i class="far fa-plus"></i></div>
+            </header>
+            <section class="todo_add_form">
+                <form action="{% url 'task_add_url' %}" method="POST">
+                    {% csrf_token %}
+
+                    {% for field in form%}
+                        {{ field.label }}
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <span class="form_error">{{error}}</span>
+                        {% endfor %}
+                        <br>
+                    {% endfor %}
+
+                    <input type="submit" value="Добавить"></input>
+                </form>
+            </section>
+            <section class="todo_list_wrapper">
+                {% for task in tasks %}
+                    <article class="todo_item">
+                    <header>
+                        <div class="todo_title">{{ task.title }}</div>
+                        <div class="todo_manage">
+                            <form action="{% url 'task_complite_url' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="task_id" value="{{ task.id }}">
+                                <button type="submit" class="todo_check {% if task.checked %} checked {% endif %}"><i class="far fa-check-circle"></i></i></button>
+                            </form>
+                            <form action="{% url 'task_delete_url' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="task_id" value="{{ task.id }}">
+                                <button type="submit" class="todo_delete"><i class="far fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </header>
+                    <main>
+                        <p class="todo_text">{{ task.body }}</p>
+                        <img class="todo_other" src="#" alt="#" hidden>
+                    </main>
+                </article>
+                {% endfor %}
+            </section>
+        </section>
+    </main>
+{% endblock %}

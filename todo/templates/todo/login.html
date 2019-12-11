@@ -1,0 +1,46 @@
+{% extends 'todo/base.html' %}
+
+{% block main %}
+    <main>
+        <section class="login_form" >
+            <form action="{% url 'login_url' %}" method="post">
+                {% csrf_token %}
+                <!-- {% for field in form %}
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% for error in field.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                    <br>
+                {% endfor %} -->
+
+                {{ form.username.label_tag}}
+                {{ form.username }}
+                {% for error in form.username.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+                <br>
+
+                {{ form.password.label_tag}}
+                {{ form.password }}
+                {% for error in form.password.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+                <br>
+
+                <div>
+                {{ form.remember_me.label_tag}}
+                {{ form.remember_me }}
+                </div>
+                {% for error in form.remember_me.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+                <br>
+
+                <input type="submit" value="Войти">
+                <a href="{% url 'register_url' %}" class="login_form_sign_up">Регистрация</a>
+                <!--                <a href="" class="login_form_lost_pass">Lost password?</a>-->
+            </form>
+        </section>
+    </main>
+{% endblock %}

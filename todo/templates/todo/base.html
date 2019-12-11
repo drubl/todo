@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'todo/css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'todo/css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap&subset=cyrillic" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'todo/awesome/css/all.min.css' %}">
+    <link rel="shortcut icon" href="{% static 'todo/img/favicon.ico' %}" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="main_logo">ToDo</div>
+    </header>
+    <section class="body_wrapper">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% block main %}
+        {% endblock %}
+    </section>
+    <footer> <a href="http://github.com/drubl">GitHub</a> 2019 | <a href="{% url 'logout_url' %}">Выйти</a></footer>
+    <script src="{% static 'todo/js/jquery.js' %}"></script>
+    <script src="{% static 'todo/js/main.js' %}"></script>
+</body>
+
+</html>
