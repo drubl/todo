@@ -26,6 +26,7 @@ class Task(models.Model):
     body = models.CharField(max_length=500)
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     checked = models.BooleanField(default=False)
+    category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
 
     class Meta():
         ordering = ['checked', 'title']
@@ -38,6 +39,15 @@ class Task(models.Model):
             self.checked = True
         self.save()
 
-
     def __str_(self):
         return f'<Task {self.title}>'
+
+class Category(models.Model):
+    title = models.CharField(max_length=50)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, blank=True)
+
+    def get_absolute_url(self):
+        return f'/?cat={self.id}'
+
+    def __str__(self):
+        return f'{self.title}'

@@ -1,4 +1,6 @@
-from django.forms import Form, CharField, HiddenInput, Textarea, PasswordInput, BooleanField, HiddenInput, ValidationError
+from django.forms import Form, CharField, HiddenInput, Textarea, PasswordInput, BooleanField, HiddenInput, ValidationError, ModelChoiceField
+
+from .models import Category
 
 class LoginForm(Form):
     username = CharField(max_length=50, label="Имя пользователя")
@@ -20,8 +22,9 @@ class RegisterForm(Form):
 
 
 class AddTaskForm(Form):
-    title = CharField(max_length=50, label="Задача")
-    body = CharField(widget=Textarea, label="Описание")
+    title = CharField(max_length=50, label='Задача')
+    body = CharField(widget=Textarea, label='Описание')
+    category = ModelChoiceField(queryset=None, label='Категория', required=False, empty_label="----------")
 
 class DeleteTaskForm(Form):
     task_id = CharField(widget=HiddenInput)

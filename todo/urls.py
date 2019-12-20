@@ -9,4 +9,5 @@ urlpatterns = [
     path('login/', Login.as_view(), name='login_url'),
     path('logout/', logout_view, name='logout_url'),
     path('register/', Register.as_view(), name='register_url'),
+    # path('cat/<id>', Tasks.as_view(), name='tasks_category_url')
 ]

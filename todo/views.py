@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
@@ -14,10 +14,30 @@ class Tasks(LoginRequiredMixin, View):
     login_url = reverse_lazy('login_url')
     def get(self, request):
         profile = request.user.profile
-        tasks = profile.get_tasks()
+
+        category_id = request.GET.get('cat')
+        if category_id is not None:
+            try:
+                tasks = profile.category_set.get(id=category_id).task_set.all()
+            except exc:
+                return Http404()
+            
+        else:
+            tasks = profile.get_tasks()
+        
         count_complited_tasks = profile.count_complited_tasks()
+
         form = AddTaskForm()
-        return render(request, 'todo/main.html', context={'tasks': tasks, 'count_complited_tasks': count_complited_tasks, 'form': form})
+        form.fields['category'].queryset = profile.category_set.all()
+
+        categories = profile.category_set.all()
+        context = {
+            'tasks': tasks,
+            'count_complited_tasks': count_complited_tasks,
+            'form': form,
+            'categories': categories
+        }
+        return render(request, 'todo/main.html', context=context)
 
 
 class TaskAdd(LoginRequiredMixin, View):
@@ -51,6 +71,12 @@ class TaskComplited(LoginRequiredMixin, View): #TODO use Mixin
             task = user.profile.task_set.get(id=task_id)
             task.change_complite_state()
         return redirect('tasks_url')
+
+class CategoryAdd(LoginRequiredMixin, View):
+    def post(self, request):
+        form = CategoryAddForm(request.POST)
+        if form.is_valid():
+            pass
 
 
 class Login(View):
