@@ -14,3 +14,5 @@ src/*.egg-info
 lib
 lib64
 *.sqlite3
+logs/
+staticfiles/

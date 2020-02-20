@@ -22,14 +22,14 @@
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
             {% endfor %}
         </ul>
         {% endif %}
         {% block main %}
         {% endblock %}
     </section>
-    <footer> <a href="http://github.com/drubl">GitHub</a> 2019 | <a href="{% url 'logout_url' %}">Выйти</a></footer>
+    <footer> <a href="http://github.com/drubl">GitHub</a>{% if user.is_authenticated %} | <a href="{% url 'logout_url' %}">Выйти</a>{% endif %}</footer>
     <script src="{% static 'todo/js/jquery.js' %}"></script>
     <script src="{% static 'todo/js/main.js' %}"></script>
 </body>

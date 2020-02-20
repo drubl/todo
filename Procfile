@@ -1,1 +1,0 @@
-web: gunicorn todoengine.wsgi --log-file -
